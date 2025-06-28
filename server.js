@@ -17,9 +17,16 @@ app.get('/', (req, res) => {
   res.send(`
     <h1>Image CDN Cache Test</h1>
     <img src="/images/sample.jpg" width="300" />
+    <p>Server is running on port: ${PORT}</p>
   `);
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+// Add a health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', port: PORT });
+});
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
